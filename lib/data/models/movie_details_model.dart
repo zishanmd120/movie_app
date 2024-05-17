@@ -28,6 +28,7 @@ class MovieDetailsModel {
   bool? video;
   double? voteAverage;
   int? voteCount;
+  List<int>? episodeRunTime;
 
   MovieDetailsModel(
       {this.adult,
@@ -58,7 +59,9 @@ class MovieDetailsModel {
         this.title,
         this.video,
         this.voteAverage,
-        this.voteCount});
+        this.voteCount,
+        this.episodeRunTime,
+      });
 
   MovieDetailsModel.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
@@ -112,6 +115,8 @@ class MovieDetailsModel {
     video = json['video'];
     voteAverage = json['vote_average'];
     voteCount = json['vote_count'];
+    // episodeRunTime = json['episode_run_time'].cast<int>();
+    episodeRunTime = (json['episode_run_time'] as List<dynamic>?)?.cast<int>() ?? [];
   }
 
   Map<String, dynamic> toJson() {
@@ -158,6 +163,7 @@ class MovieDetailsModel {
     data['video'] = video;
     data['vote_average'] = voteAverage;
     data['vote_count'] = voteCount;
+    data['episode_run_time'] = episodeRunTime;
     return data;
   }
 }

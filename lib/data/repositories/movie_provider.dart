@@ -33,8 +33,8 @@ class MovieProvider extends GetConnect{
     }
   }
 
-  Future<MovieListModel?> getTvList() async {
-    var response = await BaseProviders().getResponseWithAccessToken(url: AppUrl.getTvListUrl,);
+  Future<MovieListModel?> getTvList(int pageNumber) async {
+    var response = await BaseProviders().getResponseWithAccessToken(url: '${AppUrl.getTvListUrl}$pageNumber',);
     if (response != null) {
       print(response.body);
       final map = jsonDecode(response.body);
@@ -68,36 +68,36 @@ class MovieProvider extends GetConnect{
   }
 
 
-  Future<MovieListModel?> getUpcomingMovieList(int pageNumber,) async {
+  Future<UpcomingMovieListModel?> getUpcomingMovieList(int pageNumber,) async {
     print('pageNumber $pageNumber ');
     var response = await BaseProviders().getResponseWithAccessToken(url: '${AppUrl.getUpcomingMovieListUrl}$pageNumber',);
     if (response != null) {
       print(response.body);
       final map = jsonDecode(response.body);
-      return MovieListModel.fromJson(map);
+      return UpcomingMovieListModel.fromJson(map);
     } else {
       return null;
     }
   }
 
-  Future<MovieListModel?> getPopularMovieList(int pageNumber,) async {
+  Future<PopularMovieListModel?> getPopularMovieList(int pageNumber,) async {
     print('pageNumber $pageNumber');
     var response = await BaseProviders().getResponseWithAccessToken(url: '${AppUrl.getPopularMovieListUrl}$pageNumber',);
     if (response != null) {
       print(response.body);
       final map = jsonDecode(response.body);
-      return MovieListModel.fromJson(map);
+      return PopularMovieListModel.fromJson(map);
     } else {
       return null;
     }
   }
 
-  Future<MovieListModel?> getOnTheAirTvList(int pageNumber,) async {
+  Future<OnTheAirTvSeriesListModel?> getOnTheAirTvList(int pageNumber,) async {
     var response = await BaseProviders().getResponseWithAccessToken(url: '${AppUrl.getOnTheAirTvListUrl}$pageNumber',);
     if (response != null) {
       print(response.body);
       final map = jsonDecode(response.body);
-      return MovieListModel.fromJson(map);
+      return OnTheAirTvSeriesListModel.fromJson(map);
     } else {
       return null;
     }

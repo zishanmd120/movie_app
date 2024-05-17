@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:movie_app_sheba_xyz/core/routes/app_pages.dart';
+import 'package:movie_app_sheba_xyz/modules/home/binding/home_binding.dart';
 import 'package:movie_app_sheba_xyz/modules/home/views/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,10 +23,20 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.deepPurple,
+          backgroundColor: const Color(0xff131516),
+        ),
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.white,),
+          bodyMedium: TextStyle(color: Colors.white,),
+          bodySmall: TextStyle(color: Colors.white,),
+        ),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      initialBinding: HomeBinding(),
+      getPages: AppPages.pages,
+      initialRoute: AppPages.INITIAL,
     );
   }
 }

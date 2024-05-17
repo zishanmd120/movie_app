@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:movie_app_sheba_xyz/core/routes/app_routes.dart';
 import 'package:movie_app_sheba_xyz/modules/home/controllers/home_controller.dart';
 
 class MovieDetailsScreen extends GetView<HomeController> {
@@ -9,8 +8,8 @@ class MovieDetailsScreen extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put(HomeController());
-    FocusManager.instance.primaryFocus?.unfocus();
+    // var controller = Get.put(HomeController());
+    // FocusManager.instance.primaryFocus?.unfocus();
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xff131516),
@@ -47,7 +46,6 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                   controller.movieDetailsModel?.originalName ??
                                   '',
                               style: const TextStyle(
-                                color: Colors.white,
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -70,9 +68,10 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                         width: 7,
                                       ),
                                       Text(
-                                        '${controller.movieDetailsModel?.runtime ?? ' '} minutes',
+                                        controller.movieDetailsModel?.runtime != null
+                                            ? '${controller.movieDetailsModel?.runtime ?? ''} minutes'
+                                            : 'Ep. Avg ${controller.movieDetailsModel?.episodeRunTime?[0] ?? ''} minutes',
                                         style: const TextStyle(
-                                          color: Colors.white,
                                           fontSize: 15,
                                         ),
                                       ),
@@ -96,7 +95,6 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                                 ?.toStringAsFixed(1) ??
                                             '',
                                         style: const TextStyle(
-                                          color: Colors.white,
                                           fontSize: 15,
                                         ),
                                       ),
@@ -128,7 +126,6 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                           ? 'Release Date'
                                           : 'Airing Date',
                                       style: const TextStyle(
-                                        color: Colors.white,
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -145,9 +142,6 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                                   ?.releaseDate ??
                                               '')
                                           : 'From ${controller.formatDate(controller.movieDetailsModel?.firstAirDate ?? '')} \nTo ${controller.formatDate(controller.movieDetailsModel?.lastAirDate ?? '')}',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                      ),
                                     ),
                                     const SizedBox(
                                       height: 15,
@@ -157,7 +151,6 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                         const Text(
                                           'Status: ',
                                           style: TextStyle(
-                                            color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -175,7 +168,6 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                                     ?.status ??
                                                 '',
                                             style: const TextStyle(
-                                              color: Colors.white,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -190,7 +182,6 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                     const Text(
                                       'Genre',
                                       style: TextStyle(
-                                        color: Colors.white,
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -232,9 +223,6 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                                         ?.genres?[genreIndex]
                                                         .name ??
                                                     '',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                ),
                                               ),
                                             ),
                                         ],
@@ -270,7 +258,6 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                               ? 'Read Less'
                                               : 'Read More..'),
                                           style: const TextStyle(
-                                            color: Colors.white,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -289,7 +276,6 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                   ? 'Related Movies'
                                   : 'Related Series',
                               style: const TextStyle(
-                                color: Colors.white,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -316,7 +302,7 @@ class MovieDetailsScreen extends GetView<HomeController> {
                               : controller.similarMovieLists.isEmpty
                                 ? const Padding(
                                   padding: EdgeInsets.only(top: 38.0),
-                                  child: Text('Opps!!! No Data Found', style: TextStyle(color: Colors.white,),),
+                                  child: Text('Opps!!! No Data Found',),
                                 )
                                 : ListView.builder(
                                   itemCount: controller.similarMovieLists.length,
@@ -356,9 +342,6 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                                       .similarMovieLists[index]
                                                       .originalName ??
                                                   '',
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                              ),
                                               maxLines: 4,
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -368,12 +351,14 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                       onTap: (){
                                         if(controller.movieDetailsModel?.originalTitle == ""){
                                           controller.getTvDetails(similarItem.id ?? 0);
-                                          Get.to(() => const MovieDetailsScreen());
+                                          // Get.to(() => const MovieDetailsScreen());
+                                          Get.toNamed(AppRoutes.detailScreen,);
                                           controller.similarMovieLists.clear();
                                           controller.getSimilarMovieList(1, similarItem.id ?? 0, 'tv',);
                                         } else {
                                           controller.getMovieDetails(similarItem.id ?? 0);
-                                          Get.to(() => const MovieDetailsScreen());
+                                          // Get.to(() => const MovieDetailsScreen());
+                                          Get.toNamed(AppRoutes.detailScreen,);
                                           controller.similarMovieLists.clear();
                                           controller.getSimilarMovieList(1, similarItem.id ?? 0, 'movie',);
                                         }
@@ -398,7 +383,7 @@ class MovieDetailsScreen extends GetView<HomeController> {
 
   Widget buildText(String text,) {
     final TextPainter textPainter = TextPainter(
-      text: TextSpan(text: text, style: const TextStyle(color: Colors.white,)),
+      text: TextSpan(text: text,),
       maxLines: 3,
       textDirection: TextDirection.ltr,
     )..layout(maxWidth: Get.width * 0.9);
@@ -412,9 +397,6 @@ class MovieDetailsScreen extends GetView<HomeController> {
       overflow: controller.isReadMore.value
           ? TextOverflow.visible
           : TextOverflow.ellipsis,
-      style: const TextStyle(
-        color: Colors.white,
-      ),
     );
   }
 }
