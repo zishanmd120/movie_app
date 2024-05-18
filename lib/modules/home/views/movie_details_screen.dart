@@ -1,7 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:movie_app_sheba_xyz/core/routes/app_routes.dart';
 import 'package:movie_app_sheba_xyz/modules/home/controllers/home_controller.dart';
+
+import '../../../core/utils/helpers.dart';
 
 class MovieDetailsScreen extends GetView<HomeController> {
   const MovieDetailsScreen({super.key});
@@ -15,7 +19,10 @@ class MovieDetailsScreen extends GetView<HomeController> {
         backgroundColor: const Color(0xff131516),
         body: Obx(
           () => controller.isMovieDetailsLoading.value || controller.isSimilarMovieListLoading.value
-              ? const Center(child: CircularProgressIndicator())
+              ? Center(child: LoadingAnimationWidget.fourRotatingDots(
+                color: Colors.orange,
+                size: 50,
+              ),)
               : SingleChildScrollView(
                   child: Column(
                     children: [
@@ -25,7 +32,8 @@ class MovieDetailsScreen extends GetView<HomeController> {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: NetworkImage(
-                                'https://image.tmdb.org/t/p/w500${controller.movieDetailsModel?.backdropPath ?? ''}'),
+                              Helpers().checkAndAddHttp(controller.movieDetailsModel?.backdropPath ?? 'https://t4.ftcdn.net/jpg/02/48/67/77/360_F_248677769_aH5CKcSQo5j5VEeovQpowoLxf7CmNZto.jpg'),
+                            ),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -70,7 +78,9 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                       Text(
                                         controller.movieDetailsModel?.runtime != null
                                             ? '${controller.movieDetailsModel?.runtime ?? ''} minutes'
-                                            : 'Ep. Avg ${controller.movieDetailsModel?.episodeRunTime?[0] ?? ''} minutes',
+                                            : controller.movieDetailsModel?.episodeRunTime?.isEmpty == true
+                                            ? '0'
+                                            : 'Ep. Avg ${controller.movieDetailsModel?.episodeRunTime?[0] ?? 0} minutes',
                                         style: const TextStyle(
                                           fontSize: 15,
                                         ),
@@ -137,11 +147,11 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                       controller.movieDetailsModel?.releaseDate
                                                   ?.isNotEmpty ==
                                               true
-                                          ? controller.formatDate(controller
+                                          ? Helpers().formatDate(controller
                                                   .movieDetailsModel
                                                   ?.releaseDate ??
                                               '')
-                                          : 'From ${controller.formatDate(controller.movieDetailsModel?.firstAirDate ?? '')} \nTo ${controller.formatDate(controller.movieDetailsModel?.lastAirDate ?? '')}',
+                                          : 'From ${Helpers().formatDate(controller.movieDetailsModel?.firstAirDate ?? '')} \nTo ${Helpers().formatDate(controller.movieDetailsModel?.lastAirDate ?? '')}',
                                     ),
                                     const SizedBox(
                                       height: 15,
@@ -313,22 +323,26 @@ class MovieDetailsScreen extends GetView<HomeController> {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Container(
-                                            height: 160,
-                                            width: 150,
-                                            margin: const EdgeInsets.only(
-                                              right: 15,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                  'https://image.tmdb.org/t/p/w500${controller.similarMovieLists[index].backdropPath ?? ''}',
+                                          Stack(
+                                            children: [
+                                              Container(
+                                                height: 160,
+                                                width: 150,
+                                                margin: const EdgeInsets.only(
+                                                  right: 15,
                                                 ),
-                                                fit: BoxFit.cover,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(20.0),
+                                                  color: Colors.white,
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                      Helpers().checkAndAddHttp(controller.similarMovieLists[index].backdropPath ?? 'https://t4.ftcdn.net/jpg/02/48/67/77/360_F_248677769_aH5CKcSQo5j5VEeovQpowoLxf7CmNZto.jpg'),
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                           const SizedBox(
                                             height: 8,

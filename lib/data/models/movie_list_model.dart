@@ -18,16 +18,6 @@ class MovieListModel {
     totalResults = json['total_results'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['page'] = page;
-    if (movieLists != null) {
-      data['results'] = movieLists!.map((v) => v.toJson()).toList();
-    }
-    data['total_pages'] = totalPages;
-    data['total_results'] = totalResults;
-    return data;
-  }
 }
 
 class UpcomingMovieListModel {
@@ -50,16 +40,6 @@ class UpcomingMovieListModel {
     totalResults = json['total_results'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['page'] = page;
-    if (movieLists != null) {
-      data['results'] = movieLists!.map((v) => v.toJson()).toList();
-    }
-    data['total_pages'] = totalPages;
-    data['total_results'] = totalResults;
-    return data;
-  }
 }
 
 class PopularMovieListModel {
@@ -82,16 +62,6 @@ class PopularMovieListModel {
     totalResults = json['total_results'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['page'] = page;
-    if (movieLists != null) {
-      data['results'] = movieLists!.map((v) => v.toJson()).toList();
-    }
-    data['total_pages'] = totalPages;
-    data['total_results'] = totalResults;
-    return data;
-  }
 }
 
 class OnTheAirTvSeriesListModel {
@@ -114,24 +84,11 @@ class OnTheAirTvSeriesListModel {
     totalResults = json['total_results'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['page'] = page;
-    if (movieLists != null) {
-      data['results'] = movieLists!.map((v) => v.toJson()).toList();
-    }
-    data['total_pages'] = totalPages;
-    data['total_results'] = totalResults;
-    return data;
-  }
 }
 
 class MovieList {
-  bool? adult;
   String? backdropPath;
-  List<int>? genreIds;
   int? id;
-  String? originalLanguage;
   String? originalTitle;
   String? originalName;
   String? overview;
@@ -144,11 +101,9 @@ class MovieList {
   int? voteCount;
 
   MovieList(
-      {this.adult,
+      {
         this.backdropPath,
-        this.genreIds,
         this.id,
-        this.originalLanguage,
         this.originalTitle,
         this.originalName,
         this.overview,
@@ -161,11 +116,8 @@ class MovieList {
         this.voteCount});
 
   MovieList.fromJson(Map<String, dynamic> json) {
-    adult = json['adult'];
     backdropPath = json['backdrop_path'];
-    genreIds = json['genre_ids'].cast<int>();
     id = json['id'];
-    originalLanguage = json['original_language'];
     originalTitle = json['original_title'];
     originalName = json['original_name'];
     overview = json['overview'];
@@ -178,23 +130,4 @@ class MovieList {
     voteCount = json['vote_count'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['adult'] = adult;
-    data['backdrop_path'] = backdropPath;
-    data['genre_ids'] = genreIds;
-    data['id'] = id;
-    data['original_language'] = originalLanguage;
-    data['original_title'] = originalTitle;
-    data['original_name'] = originalName;
-    data['overview'] = overview;
-    data['popularity'] = popularity;
-    data['poster_path'] = posterPath;
-    data['release_date'] = releaseDate;
-    data['title'] = title;
-    data['video'] = video;
-    data['vote_average'] = voteAverage;
-    data['vote_count'] = voteCount;
-    return data;
-  }
 }

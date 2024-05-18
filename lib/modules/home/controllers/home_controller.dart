@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
-import 'package:intl/intl.dart';
 import 'package:movie_app_sheba_xyz/data/models/movie_details_model.dart';
 import 'package:movie_app_sheba_xyz/data/models/movie_list_model.dart';
 import 'package:movie_app_sheba_xyz/data/models/search_model.dart';
@@ -276,26 +275,20 @@ class HomeController extends GetxController with GetSingleTickerProviderStateMix
     }
   }
 
-  formatDate(String date){
-    DateTime dateTime = DateTime.parse(date);
-    String formattedDate = DateFormat('MMM dd, yyyy').format(dateTime);
-    return formattedDate;
-  }
-
 
   RxString searchedText = ''.obs;
-  // var searchTextEditingController = TextEditingController().obs;
   var searchTextEditingController = TextEditingController();
   RxBool isSearchListLoading = false.obs;
   RxBool isSearching = false.obs;
-  // SearchModel ? searchedData;
   final Rx<SearchModel?> searchedData = Rx<SearchModel?>(null);
+  RxBool checkForNull = false.obs;
 
   Future<void> getSearchList(String value) async {
     isSearchListLoading.value = true;
     var response = await MovieProvider().getSearchList(value);
     if(response != null){
       searchedData.value = response;
+      searchedData.value?.totalResults == 0 ? checkForNull.value = true : checkForNull.value = false;
       isSearchListLoading.value = false;
     } else {
       isSearchListLoading.value = false;

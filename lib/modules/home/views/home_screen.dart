@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:movie_app_sheba_xyz/core/routes/app_routes.dart';
+import 'package:movie_app_sheba_xyz/core/utils/helpers.dart';
 import 'package:movie_app_sheba_xyz/modules/home/controllers/home_controller.dart';
-import 'package:movie_app_sheba_xyz/modules/home/views/movie_details_screen.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
@@ -37,10 +38,7 @@ class HomeScreen extends GetView<HomeController> {
                           ),
                         ),
                         const SizedBox(
-                          height: 10,
-                        ),
-                        const SizedBox(
-                          height: 5,
+                          height: 15,
                         ),
                         TextFormField(
                           controller: controller.searchTextEditingController,
@@ -152,11 +150,14 @@ class HomeScreen extends GetView<HomeController> {
                       children: [
                         Obx(
                           () => controller.isMovieListLoading.value
-                              ? const Center(
+                              ? Center(
                                   child: SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: CircularProgressIndicator(),
+                                    height: 60,
+                                    width: 60,
+                                    child: LoadingAnimationWidget.dotsTriangle(
+                                      color: Colors.orange,
+                                      size: 40,
+                                    ),
                                   ),
                                 )
                               : Column(
@@ -206,10 +207,7 @@ class HomeScreen extends GetView<HomeController> {
                                                         BorderRadius.circular(
                                                             20.0),
                                                     child: Image.network(
-                                                      'https://image.tmdb.org/t/p/w500${movieItem.posterPath ?? ' '}',
-                                                      // height: 250,
-                                                      // width: Get.width * 0.5,
-                                                      // fit: BoxFit.cover,
+                                                      Helpers().checkAndAddHttp(movieItem.posterPath ?? 'https://t4.ftcdn.net/jpg/02/48/67/77/360_F_248677769_aH5CKcSQo5j5VEeovQpowoLxf7CmNZto.jpg'),
                                                     ),
                                                   ),
                                                   const SizedBox(
@@ -222,7 +220,8 @@ class HomeScreen extends GetView<HomeController> {
                                                         TextOverflow.ellipsis,
                                                     style: const TextStyle(
                                                       fontSize: 14,
-                                                      fontWeight: FontWeight.w500,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ],
@@ -230,11 +229,12 @@ class HomeScreen extends GetView<HomeController> {
                                               onTap: () {
                                                 controller.getMovieDetails(
                                                     movieItem.id ?? 0);
-                                                Get.toNamed(AppRoutes.detailScreen,);
+                                                Get.toNamed(
+                                                  AppRoutes.detailScreen,
+                                                );
                                                 controller.similarMovieLists
                                                     .clear();
-                                                controller
-                                                    .getSimilarMovieList(
+                                                controller.getSimilarMovieList(
                                                   1,
                                                   movieItem.id ?? 0,
                                                   'movie',
@@ -256,11 +256,14 @@ class HomeScreen extends GetView<HomeController> {
                         ),
                         Obx(
                           () => controller.isTvListLoading.value
-                              ? const Center(
+                              ? Center(
                                   child: SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: CircularProgressIndicator(),
+                                    height: 60,
+                                    width: 60,
+                                    child: LoadingAnimationWidget.dotsTriangle(
+                                      color: Colors.orange,
+                                      size: 40,
+                                    ),
                                   ),
                                 )
                               : Column(
@@ -295,8 +298,8 @@ class HomeScreen extends GetView<HomeController> {
                                             SliverChildBuilderDelegate(
                                           childCount: controller.tvLists.length,
                                           (context, index) {
-                                            var movieItem = controller
-                                                .tvLists[index];
+                                            var movieItem =
+                                                controller.tvLists[index];
                                             return GestureDetector(
                                               child: Column(
                                                 crossAxisAlignment:
@@ -307,7 +310,7 @@ class HomeScreen extends GetView<HomeController> {
                                                         BorderRadius.circular(
                                                             20.0),
                                                     child: Image.network(
-                                                      'https://image.tmdb.org/t/p/w500${movieItem.posterPath ?? ' '}',
+                                                      Helpers().checkAndAddHttp(movieItem.posterPath ?? 'https://t4.ftcdn.net/jpg/02/48/67/77/360_F_248677769_aH5CKcSQo5j5VEeovQpowoLxf7CmNZto.jpg'),
                                                     ),
                                                   ),
                                                   const SizedBox(
@@ -330,11 +333,12 @@ class HomeScreen extends GetView<HomeController> {
                                               onTap: () {
                                                 controller.getTvDetails(
                                                     movieItem.id ?? 0);
-                                                Get.toNamed(AppRoutes.detailScreen,);
+                                                Get.toNamed(
+                                                  AppRoutes.detailScreen,
+                                                );
                                                 controller.similarMovieLists
                                                     .clear();
-                                                controller
-                                                    .getSimilarMovieList(
+                                                controller.getSimilarMovieList(
                                                   1,
                                                   movieItem.id ?? 0,
                                                   'tv',
@@ -356,11 +360,14 @@ class HomeScreen extends GetView<HomeController> {
                         ),
                         Obx(
                           () => controller.isUpcomingMovieListLoading.value
-                              ? const Center(
+                              ? Center(
                                   child: SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: CircularProgressIndicator(),
+                                    height: 60,
+                                    width: 60,
+                                    child: LoadingAnimationWidget.dotsTriangle(
+                                      color: Colors.orange,
+                                      size: 40,
+                                    ),
                                   ),
                                 )
                               : Column(
@@ -408,10 +415,7 @@ class HomeScreen extends GetView<HomeController> {
                                                         BorderRadius.circular(
                                                             20.0),
                                                     child: Image.network(
-                                                      'https://image.tmdb.org/t/p/w500${movieItem.posterPath ?? ' '}',
-                                                      // height: 250,
-                                                      // width: Get.width * 0.5,
-                                                      // fit: BoxFit.cover,
+                                                      Helpers().checkAndAddHttp(movieItem.posterPath ?? 'https://t4.ftcdn.net/jpg/02/48/67/77/360_F_248677769_aH5CKcSQo5j5VEeovQpowoLxf7CmNZto.jpg'),
                                                     ),
                                                   ),
                                                   const SizedBox(
@@ -434,11 +438,12 @@ class HomeScreen extends GetView<HomeController> {
                                               onTap: () {
                                                 controller.getMovieDetails(
                                                     movieItem.id ?? 0);
-                                                Get.toNamed(AppRoutes.detailScreen,);
+                                                Get.toNamed(
+                                                  AppRoutes.detailScreen,
+                                                );
                                                 controller.similarMovieLists
                                                     .clear();
-                                                controller
-                                                    .getSimilarMovieList(
+                                                controller.getSimilarMovieList(
                                                   1,
                                                   movieItem.id ?? 0,
                                                   'movie',
@@ -452,7 +457,8 @@ class HomeScreen extends GetView<HomeController> {
                                     const SizedBox(
                                       height: 16,
                                     ),
-                                    controller.isUpcomingMovieListMoreLoading.value
+                                    controller.isUpcomingMovieListMoreLoading
+                                            .value
                                         ? const SizedBox()
                                         : const SizedBox(),
                                   ],
@@ -460,11 +466,14 @@ class HomeScreen extends GetView<HomeController> {
                         ),
                         Obx(
                           () => controller.isPopularMovieListLoading.value
-                              ? const Center(
+                              ? Center(
                                   child: SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: CircularProgressIndicator(),
+                                    height: 60,
+                                    width: 60,
+                                    child: LoadingAnimationWidget.dotsTriangle(
+                                      color: Colors.orange,
+                                      size: 40,
+                                    ),
                                   ),
                                 )
                               : Column(
@@ -512,7 +521,7 @@ class HomeScreen extends GetView<HomeController> {
                                                         BorderRadius.circular(
                                                             20.0),
                                                     child: Image.network(
-                                                      'https://image.tmdb.org/t/p/w500${movieItem.posterPath ?? ' '}',
+                                                      Helpers().checkAndAddHttp(movieItem.posterPath ?? 'https://t4.ftcdn.net/jpg/02/48/67/77/360_F_248677769_aH5CKcSQo5j5VEeovQpowoLxf7CmNZto.jpg'),
                                                     ),
                                                   ),
                                                   const SizedBox(
@@ -535,11 +544,12 @@ class HomeScreen extends GetView<HomeController> {
                                               onTap: () {
                                                 controller.getMovieDetails(
                                                     movieItem.id ?? 0);
-                                                Get.toNamed(AppRoutes.detailScreen,);
+                                                Get.toNamed(
+                                                  AppRoutes.detailScreen,
+                                                );
                                                 controller.similarMovieLists
                                                     .clear();
-                                                controller
-                                                    .getSimilarMovieList(
+                                                controller.getSimilarMovieList(
                                                   1,
                                                   movieItem.id ?? 0,
                                                   'movie',
@@ -553,7 +563,8 @@ class HomeScreen extends GetView<HomeController> {
                                     const SizedBox(
                                       height: 16,
                                     ),
-                                    controller.isPopularMovieListMoreLoading.value
+                                    controller
+                                            .isPopularMovieListMoreLoading.value
                                         ? const SizedBox()
                                         : const SizedBox(),
                                   ],
@@ -561,11 +572,14 @@ class HomeScreen extends GetView<HomeController> {
                         ),
                         Obx(
                           () => controller.isOnTheAirTvListLoading.value
-                              ? const Center(
+                              ? Center(
                                   child: SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: CircularProgressIndicator(),
+                                    height: 60,
+                                    width: 60,
+                                    child: LoadingAnimationWidget.dotsTriangle(
+                                      color: Colors.orange,
+                                      size: 40,
+                                    ),
                                   ),
                                 )
                               : Column(
@@ -598,8 +612,8 @@ class HomeScreen extends GetView<HomeController> {
                                         ),
                                         childrenDelegate:
                                             SliverChildBuilderDelegate(
-                                          childCount: controller
-                                              .onTheAirTvLists.length,
+                                          childCount:
+                                              controller.onTheAirTvLists.length,
                                           (context, index) {
                                             var movieItem = controller
                                                 .onTheAirTvLists[index];
@@ -613,7 +627,7 @@ class HomeScreen extends GetView<HomeController> {
                                                         BorderRadius.circular(
                                                             20.0),
                                                     child: Image.network(
-                                                      'https://image.tmdb.org/t/p/w500${movieItem.posterPath ?? ' '}',
+                                                      Helpers().checkAndAddHttp(movieItem.posterPath ?? 'https://t4.ftcdn.net/jpg/02/48/67/77/360_F_248677769_aH5CKcSQo5j5VEeovQpowoLxf7CmNZto.jpg'),
                                                     ),
                                                   ),
                                                   const SizedBox(
@@ -636,11 +650,12 @@ class HomeScreen extends GetView<HomeController> {
                                               onTap: () {
                                                 controller.getTvDetails(
                                                     movieItem.id ?? 0);
-                                                Get.toNamed(AppRoutes.detailScreen,);
+                                                Get.toNamed(
+                                                  AppRoutes.detailScreen,
+                                                );
                                                 controller.similarMovieLists
                                                     .clear();
-                                                controller
-                                                    .getSimilarMovieList(
+                                                controller.getSimilarMovieList(
                                                   1,
                                                   movieItem.id ?? 0,
                                                   'tv',
@@ -678,62 +693,90 @@ class HomeScreen extends GetView<HomeController> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount:
-                                controller.searchedData.value?.results?.length,
-                            itemBuilder: (context, index) {
-                              var item = controller
-                                  .searchedData.value?.results?[index];
-                              return ListTile(
-                                leading: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: SizedBox(
-                                    width: Get.width * 0.15,
-                                    child: Image.network(
-                                      'https://image.tmdb.org/t/p/w500${item?.posterPath ?? ' '}',
-                                      height: 50,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                title: SizedBox(
-                                    width: Get.width * 0.6,
+                          constraints: const BoxConstraints(
+                            minHeight: 200.0,
+                            maxHeight: 500.0,
+                          ),
+                          child: Obx(
+                            () => controller.checkForNull.value == true
+                                ? const Center(
                                     child: Text(
-                                      item?.title ?? '',
-                                      style: const TextStyle(
-                                        color: Colors.black,
+                                      'No Data Found',
+                                      style: TextStyle(
+                                        color: Colors.orange,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
                                       ),
-                                    )),
-                                onTap: () {
-                                  if (item?.mediaType == 'tv') {
-                                    FocusManager.instance.primaryFocus
-                                        ?.unfocus();
-                                    controller.getTvDetails(item?.id ?? 0);
-                                    Get.toNamed(AppRoutes.detailScreen,);
-                                    controller.similarMovieLists.clear();
-                                    controller.getSimilarMovieList(
-                                      1,
-                                      item?.id ?? 0,
-                                      'tv',
-                                    );
-                                  } else if (item?.mediaType == 'movie') {
-                                    FocusManager.instance.primaryFocus
-                                        ?.unfocus();
-                                    controller.getMovieDetails(item?.id ?? 0);
-                                    Get.toNamed(AppRoutes.detailScreen,);
-                                    controller.similarMovieLists.clear();
-                                    controller.getSimilarMovieList(
-                                      1,
-                                      item?.id ?? 0,
-                                      'movie',
-                                    );
-                                  }
-                                  controller.searchTextEditingController.clear();
-                                  controller.searchedText.value = '';
-                                },
-                              );
-                            },
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: controller
+                                        .searchedData.value?.results?.length,
+                                    itemBuilder: (context, index) {
+                                      var item = controller
+                                          .searchedData.value?.results?[index];
+                                      return ListTile(
+                                        leading: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: SizedBox(
+                                            width: Get.width * 0.15,
+                                            child: Image.network(
+                                              Helpers().checkAndAddHttp(item?.posterPath ?? 'https://e7.pngegg.com/pngimages/130/1021/png-clipart-movie-logo-movie-logo-film-tape.png'),
+                                              height: 50,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        title: SizedBox(
+                                            width: Get.width * 0.6,
+                                            child: Text(
+                                              item?.title ?? item?.name ?? '',
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            )),
+                                        onTap: () {
+                                          if (item?.mediaType == 'tv') {
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
+                                            controller
+                                                .getTvDetails(item?.id ?? 0);
+                                            Get.toNamed(
+                                              AppRoutes.detailScreen,
+                                            );
+                                            controller.similarMovieLists
+                                                .clear();
+                                            controller.getSimilarMovieList(
+                                              1,
+                                              item?.id ?? 0,
+                                              'tv',
+                                            );
+                                          } else if (item?.mediaType ==
+                                              'movie') {
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
+                                            controller
+                                                .getMovieDetails(item?.id ?? 0);
+                                            Get.toNamed(
+                                              AppRoutes.detailScreen,
+                                            );
+                                            controller.similarMovieLists
+                                                .clear();
+                                            controller.getSimilarMovieList(
+                                              1,
+                                              item?.id ?? 0,
+                                              'movie',
+                                            );
+                                          }
+                                          controller.searchTextEditingController
+                                              .clear();
+                                          controller.searchedText.value = '';
+                                        },
+                                      );
+                                    },
+                                  ),
                           ),
                         ),
                       ),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:movie_app_sheba_xyz/data/models/movie_details_model.dart';
 import 'package:movie_app_sheba_xyz/data/models/movie_list_model.dart';
