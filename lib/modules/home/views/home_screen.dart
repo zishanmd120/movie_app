@@ -148,533 +148,46 @@ class HomeScreen extends GetView<HomeController> {
                     child: TabBarView(
                       controller: controller.tabController,
                       children: [
-                        Obx(
-                          () => controller.isMovieListLoading.value
-                              ? Center(
-                                  child: SizedBox(
-                                    height: 60,
-                                    width: 60,
-                                    child: LoadingAnimationWidget.dotsTriangle(
-                                      color: Colors.orange,
-                                      size: 40,
-                                    ),
-                                  ),
-                                )
-                              : Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    Expanded(
-                                      child: GridView.custom(
-                                        controller:
-                                            controller.scrollControllerMovies,
-                                        padding: EdgeInsets.zero,
-                                        gridDelegate:
-                                            SliverWovenGridDelegate.count(
-                                          crossAxisCount: 2,
-                                          pattern: [
-                                            const WovenGridTile(
-                                              // 4 / 7,
-                                              3.7 / 6.7,
-                                              crossAxisRatio: 0.95,
-                                              alignment: AlignmentDirectional
-                                                  .centerEnd,
-                                            ),
-                                            const WovenGridTile(
-                                              // 3.6 / 7,
-                                              3.5 / 6.7,
-                                              crossAxisRatio: 0.85,
-                                              alignment:
-                                                  AlignmentDirectional.center,
-                                            ),
-                                          ],
-                                        ),
-                                        childrenDelegate:
-                                            SliverChildBuilderDelegate(
-                                          childCount:
-                                              controller.movieLists.length,
-                                          (context, index) {
-                                            var movieItem =
-                                                controller.movieLists[index];
-                                            return GestureDetector(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0),
-                                                    child: Image.network(
-                                                      Helpers().checkAndAddHttp(movieItem.posterPath ?? 'https://t4.ftcdn.net/jpg/02/48/67/77/360_F_248677769_aH5CKcSQo5j5VEeovQpowoLxf7CmNZto.jpg'),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 9,
-                                                  ),
-                                                  Text(
-                                                    movieItem.title ?? '',
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              onTap: () {
-                                                controller.getMovieDetails(
-                                                    movieItem.id ?? 0);
-                                                Get.toNamed(
-                                                  AppRoutes.detailScreen,
-                                                );
-                                                controller.similarMovieLists
-                                                    .clear();
-                                                controller.getSimilarMovieList(
-                                                  1,
-                                                  movieItem.id ?? 0,
-                                                  'movie',
-                                                );
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    controller.isMovieListMoreLoading.value
-                                        ? const SizedBox()
-                                        : const SizedBox(),
-                                  ],
-                                ),
-                        ),
-                        Obx(
-                          () => controller.isTvListLoading.value
-                              ? Center(
-                                  child: SizedBox(
-                                    height: 60,
-                                    width: 60,
-                                    child: LoadingAnimationWidget.dotsTriangle(
-                                      color: Colors.orange,
-                                      size: 40,
-                                    ),
-                                  ),
-                                )
-                              : Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    Expanded(
-                                      child: GridView.custom(
-                                        controller:
-                                            controller.scrollControllerTvSeries,
-                                        padding: EdgeInsets.zero,
-                                        gridDelegate:
-                                            SliverWovenGridDelegate.count(
-                                          crossAxisCount: 2,
-                                          pattern: [
-                                            const WovenGridTile(
-                                              3.7 / 6.7,
-                                              crossAxisRatio: 0.95,
-                                              alignment: AlignmentDirectional
-                                                  .centerEnd,
-                                            ),
-                                            const WovenGridTile(
-                                              3.5 / 6.7,
-                                              crossAxisRatio: 0.85,
-                                              alignment:
-                                                  AlignmentDirectional.center,
-                                            ),
-                                          ],
-                                        ),
-                                        childrenDelegate:
-                                            SliverChildBuilderDelegate(
-                                          childCount: controller.tvLists.length,
-                                          (context, index) {
-                                            var movieItem =
-                                                controller.tvLists[index];
-                                            return GestureDetector(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0),
-                                                    child: Image.network(
-                                                      Helpers().checkAndAddHttp(movieItem.posterPath ?? 'https://t4.ftcdn.net/jpg/02/48/67/77/360_F_248677769_aH5CKcSQo5j5VEeovQpowoLxf7CmNZto.jpg'),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 9,
-                                                  ),
-                                                  Text(
-                                                    movieItem.originalName ??
-                                                        '',
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              onTap: () {
-                                                controller.getTvDetails(
-                                                    movieItem.id ?? 0);
-                                                Get.toNamed(
-                                                  AppRoutes.detailScreen,
-                                                );
-                                                controller.similarMovieLists
-                                                    .clear();
-                                                controller.getSimilarMovieList(
-                                                  1,
-                                                  movieItem.id ?? 0,
-                                                  'tv',
-                                                );
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    controller.isTvListMoreLoading.value
-                                        ? const SizedBox()
-                                        : const SizedBox(),
-                                  ],
-                                ),
-                        ),
-                        Obx(
-                          () => controller.isUpcomingMovieListLoading.value
-                              ? Center(
-                                  child: SizedBox(
-                                    height: 60,
-                                    width: 60,
-                                    child: LoadingAnimationWidget.dotsTriangle(
-                                      color: Colors.orange,
-                                      size: 40,
-                                    ),
-                                  ),
-                                )
-                              : Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    Expanded(
-                                      child: GridView.custom(
-                                        controller:
-                                            controller.scrollControllerUpcoming,
-                                        padding: EdgeInsets.zero,
-                                        gridDelegate:
-                                            SliverWovenGridDelegate.count(
-                                          crossAxisCount: 2,
-                                          pattern: [
-                                            const WovenGridTile(
-                                              3.7 / 6.7,
-                                              crossAxisRatio: 0.95,
-                                              alignment: AlignmentDirectional
-                                                  .centerEnd,
-                                            ),
-                                            const WovenGridTile(
-                                              3.5 / 6.7,
-                                              crossAxisRatio: 0.85,
-                                              alignment:
-                                                  AlignmentDirectional.center,
-                                            ),
-                                          ],
-                                        ),
-                                        childrenDelegate:
-                                            SliverChildBuilderDelegate(
-                                          childCount: controller
-                                              .upcomingMovieLists.length,
-                                          (context, index) {
-                                            var movieItem = controller
-                                                .upcomingMovieLists[index];
-                                            return GestureDetector(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0),
-                                                    child: Image.network(
-                                                      Helpers().checkAndAddHttp(movieItem.posterPath ?? 'https://t4.ftcdn.net/jpg/02/48/67/77/360_F_248677769_aH5CKcSQo5j5VEeovQpowoLxf7CmNZto.jpg'),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 9,
-                                                  ),
-                                                  Text(
-                                                    movieItem.originalTitle ??
-                                                        '',
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              onTap: () {
-                                                controller.getMovieDetails(
-                                                    movieItem.id ?? 0);
-                                                Get.toNamed(
-                                                  AppRoutes.detailScreen,
-                                                );
-                                                controller.similarMovieLists
-                                                    .clear();
-                                                controller.getSimilarMovieList(
-                                                  1,
-                                                  movieItem.id ?? 0,
-                                                  'movie',
-                                                );
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    controller.isUpcomingMovieListMoreLoading
-                                            .value
-                                        ? const SizedBox()
-                                        : const SizedBox(),
-                                  ],
-                                ),
-                        ),
-                        Obx(
-                          () => controller.isPopularMovieListLoading.value
-                              ? Center(
-                                  child: SizedBox(
-                                    height: 60,
-                                    width: 60,
-                                    child: LoadingAnimationWidget.dotsTriangle(
-                                      color: Colors.orange,
-                                      size: 40,
-                                    ),
-                                  ),
-                                )
-                              : Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    Expanded(
-                                      child: GridView.custom(
-                                        controller:
-                                            controller.scrollControllerPopular,
-                                        padding: EdgeInsets.zero,
-                                        gridDelegate:
-                                            SliverWovenGridDelegate.count(
-                                          crossAxisCount: 2,
-                                          pattern: [
-                                            const WovenGridTile(
-                                              3.7 / 6.7,
-                                              crossAxisRatio: 0.95,
-                                              alignment: AlignmentDirectional
-                                                  .centerEnd,
-                                            ),
-                                            const WovenGridTile(
-                                              3.5 / 6.7,
-                                              crossAxisRatio: 0.85,
-                                              alignment:
-                                                  AlignmentDirectional.center,
-                                            ),
-                                          ],
-                                        ),
-                                        childrenDelegate:
-                                            SliverChildBuilderDelegate(
-                                          childCount: controller
-                                              .popularMovieLists.length,
-                                          (context, index) {
-                                            var movieItem = controller
-                                                .popularMovieLists[index];
-                                            return GestureDetector(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0),
-                                                    child: Image.network(
-                                                      Helpers().checkAndAddHttp(movieItem.posterPath ?? 'https://t4.ftcdn.net/jpg/02/48/67/77/360_F_248677769_aH5CKcSQo5j5VEeovQpowoLxf7CmNZto.jpg'),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 9,
-                                                  ),
-                                                  Text(
-                                                    movieItem.originalTitle ??
-                                                        '',
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              onTap: () {
-                                                controller.getMovieDetails(
-                                                    movieItem.id ?? 0);
-                                                Get.toNamed(
-                                                  AppRoutes.detailScreen,
-                                                );
-                                                controller.similarMovieLists
-                                                    .clear();
-                                                controller.getSimilarMovieList(
-                                                  1,
-                                                  movieItem.id ?? 0,
-                                                  'movie',
-                                                );
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    controller
-                                            .isPopularMovieListMoreLoading.value
-                                        ? const SizedBox()
-                                        : const SizedBox(),
-                                  ],
-                                ),
-                        ),
-                        Obx(
-                          () => controller.isOnTheAirTvListLoading.value
-                              ? Center(
-                                  child: SizedBox(
-                                    height: 60,
-                                    width: 60,
-                                    child: LoadingAnimationWidget.dotsTriangle(
-                                      color: Colors.orange,
-                                      size: 40,
-                                    ),
-                                  ),
-                                )
-                              : Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    Expanded(
-                                      child: GridView.custom(
-                                        controller:
-                                            controller.scrollControllerOnTheAir,
-                                        padding: EdgeInsets.zero,
-                                        gridDelegate:
-                                            SliverWovenGridDelegate.count(
-                                          crossAxisCount: 2,
-                                          pattern: [
-                                            const WovenGridTile(
-                                              3.7 / 6.7,
-                                              crossAxisRatio: 0.95,
-                                              alignment: AlignmentDirectional
-                                                  .centerEnd,
-                                            ),
-                                            const WovenGridTile(
-                                              3.5 / 6.7,
-                                              crossAxisRatio: 0.85,
-                                              alignment:
-                                                  AlignmentDirectional.center,
-                                            ),
-                                          ],
-                                        ),
-                                        childrenDelegate:
-                                            SliverChildBuilderDelegate(
-                                          childCount:
-                                              controller.onTheAirTvLists.length,
-                                          (context, index) {
-                                            var movieItem = controller
-                                                .onTheAirTvLists[index];
-                                            return GestureDetector(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0),
-                                                    child: Image.network(
-                                                      Helpers().checkAndAddHttp(movieItem.posterPath ?? 'https://t4.ftcdn.net/jpg/02/48/67/77/360_F_248677769_aH5CKcSQo5j5VEeovQpowoLxf7CmNZto.jpg'),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 9,
-                                                  ),
-                                                  Text(
-                                                    movieItem.originalName ??
-                                                        '',
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              onTap: () {
-                                                controller.getTvDetails(
-                                                    movieItem.id ?? 0);
-                                                Get.toNamed(
-                                                  AppRoutes.detailScreen,
-                                                );
-                                                controller.similarMovieLists
-                                                    .clear();
-                                                controller.getSimilarMovieList(
-                                                  1,
-                                                  movieItem.id ?? 0,
-                                                  'tv',
-                                                );
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    controller.isOnTheAirTvListMoreLoading.value
-                                        ? const SizedBox()
-                                        : const SizedBox(),
-                                  ],
-                                ),
-                        ),
+                        Obx(() => GridviewCustomWidget(
+                          isLoading: controller.isMovieListLoading.value,
+                          isMoreLoading: controller.isMovieListMoreLoading.value,
+                          controller: controller,
+                          scrollController: controller.scrollControllerMovies,
+                          watchItemList: controller.movieLists,
+                          detailsType: 'movie',
+                        ),),
+                        Obx(() => GridviewCustomWidget(
+                          isLoading: controller.isTvListLoading.value,
+                          isMoreLoading: controller.isTvListMoreLoading.value,
+                          controller: controller,
+                          scrollController: controller.scrollControllerTvSeries,
+                          watchItemList: controller.tvLists,
+                          detailsType: 'tv',
+                        ),),
+                        Obx(() => GridviewCustomWidget(
+                          isLoading: controller.isUpcomingMovieListLoading.value,
+                          isMoreLoading: controller.isUpcomingMovieListMoreLoading.value,
+                          controller: controller,
+                          scrollController: controller.scrollControllerUpcoming,
+                          watchItemList: controller.upcomingMovieLists,
+                          detailsType: 'movie',
+                        ),),
+                        Obx(() => GridviewCustomWidget(
+                          isLoading: controller.isPopularMovieListLoading.value,
+                          isMoreLoading: controller.isPopularMovieListMoreLoading.value,
+                          controller: controller,
+                          scrollController: controller.scrollControllerPopular,
+                          watchItemList: controller.popularMovieLists,
+                          detailsType: 'movie',
+                        ),),
+                        Obx(() => GridviewCustomWidget(
+                          isLoading: controller.isOnTheAirTvListLoading.value,
+                          isMoreLoading: controller.isOnTheAirTvListMoreLoading.value,
+                          controller: controller,
+                          scrollController: controller.scrollControllerOnTheAir,
+                          watchItemList: controller.onTheAirTvLists,
+                          detailsType: 'tv',
+                        ),),
                       ],
                     ),
                   ),
@@ -687,15 +200,13 @@ class HomeScreen extends GetView<HomeController> {
                         top: 170,
                         left: 20,
                         right: 20,
-                        bottom: 50,
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           constraints: const BoxConstraints(
-                            minHeight: 200.0,
-                            maxHeight: 500.0,
+                            maxHeight: 230.0,
                           ),
                           child: Obx(
                             () => controller.checkForNull.value == true
@@ -711,11 +222,9 @@ class HomeScreen extends GetView<HomeController> {
                                   )
                                 : ListView.builder(
                                     shrinkWrap: true,
-                                    itemCount: controller
-                                        .searchedData.value?.results?.length,
+                                    itemCount: controller.searchedData.value?.results?.length,
                                     itemBuilder: (context, index) {
-                                      var item = controller
-                                          .searchedData.value?.results?[index];
+                                      var item = controller.searchedData.value?.results?[index];
                                       return ListTile(
                                         leading: ClipRRect(
                                           borderRadius:
@@ -788,3 +297,131 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 }
+
+class GridviewCustomWidget extends StatelessWidget {
+  const GridviewCustomWidget({
+    super.key,
+    required this.isLoading,
+    required this.isMoreLoading,
+    required this.controller,
+    required this.scrollController,
+    required this.watchItemList,
+    required this.detailsType,
+  });
+
+  final bool isLoading;
+  final bool isMoreLoading;
+  final HomeController controller;
+  final ScrollController scrollController;
+  final List watchItemList;
+  final String detailsType;
+
+  @override
+  Widget build(BuildContext context) {
+    return isLoading
+        ? Center(
+            child: SizedBox(
+              height: 60,
+              width: 60,
+              child: LoadingAnimationWidget.dotsTriangle(
+                color: Colors.orange,
+                size: 40,
+              ),
+            ),
+          )
+        : Column(
+            children: [
+              const SizedBox(
+                height: 16,
+              ),
+              Expanded(
+                child: GridView.custom(
+                  controller: scrollController,
+                  padding: EdgeInsets.zero,
+                  gridDelegate: SliverWovenGridDelegate.count(
+                    crossAxisCount: 2,
+                    pattern: [
+                      const WovenGridTile(
+                        3.7 / 6.7,
+                        crossAxisRatio: 0.95,
+                        alignment: AlignmentDirectional.centerEnd,
+                      ),
+                      const WovenGridTile(
+                        3.5 / 6.7,
+                        crossAxisRatio: 0.85,
+                        alignment: AlignmentDirectional.center,
+                      ),
+                    ],
+                  ),
+                  childrenDelegate: SliverChildBuilderDelegate(
+                    childCount: watchItemList.length,
+                    (context, index) {
+                      var movieItem = watchItemList[index];
+                      return GestureDetector(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                20.0,
+                              ),
+                              child: Image.network(
+                                Helpers().checkAndAddHttp(movieItem
+                                        .posterPath ??
+                                    'https://t4.ftcdn.net/jpg/02/48/67/77/360_F_248677769_aH5CKcSQo5j5VEeovQpowoLxf7CmNZto.jpg'),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 9,
+                            ),
+                            Text(
+                              movieItem.originalName ?? '',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          if (detailsType == 'movie') {
+                            controller.getMovieDetails(movieItem.id ?? 0);
+                            Get.toNamed(
+                              AppRoutes.detailScreen,
+                            );
+                            controller.similarMovieLists.clear();
+                            controller.getSimilarMovieList(
+                              1,
+                              movieItem.id ?? 0,
+                              'movie',
+                            );
+                          } else if (detailsType == 'tv') {
+                            controller.getTvDetails(movieItem.id ?? 0);
+                            Get.toNamed(
+                              AppRoutes.detailScreen,
+                            );
+                            controller.similarMovieLists.clear();
+                            controller.getSimilarMovieList(
+                              1,
+                              movieItem.id ?? 0,
+                              'tv',
+                            );
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              isMoreLoading ? const SizedBox() : const SizedBox(),
+            ],
+          );
+  }
+}
+
+
